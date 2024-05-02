@@ -1,0 +1,27 @@
+
+
+header {
+    background: linear-gradient(to right,#0f0914,#d9c5ec);
+    color:rgb(46, 46, 90);
+}
+
+/*estilos para la tabla*/
+table th {
+    background-color: #c5dac9 !important;
+    border-color: #043216!important;
+    
+    color: rgb(11, 10, 10);
+}
+table>tbody>tr>td {
+    /* background: linear-gradient(to right,#0f0914,#d9c5ec) !important; */
+    
+    background-color: #c9e8ce !important;
+    vertical-align: middle !important;
+    border-color:  #043216!important;
+}
+
+/*para alinear los botones y cuadro de busqueda*/
+.btn-group, .btn-group-vertical {
+    position: absolute !important;
+}
+
