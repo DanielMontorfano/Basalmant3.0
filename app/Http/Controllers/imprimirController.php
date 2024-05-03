@@ -8,6 +8,7 @@ use App\Models\Protocolo;
 use App\Models\Equipoplansejecut; 
 use App\Models\Tareash;
 use App\Models\Repuesto;
+use App\Models\Foto;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -53,7 +54,9 @@ $dompdf->stream(); */
                $repuestos=$equipo->equiposRepuestos;
                $plans=Equipo::find($id)->equiposPlans; 
                $equiposB=Equipo::find($id)->equiposAEquiposB; 
-               $pdf = PDF::loadView('impresiones.imprimirFichaEquipo', compact('equipo', 'repuestos', 'plans','equiposB'));
+               $primerRutaFoto = Foto::where('equipo_id', $equipo->id)->value('rutaFoto');
+              // return $primerRutaFoto;
+               $pdf = PDF::loadView('impresiones.imprimirFichaEquipo', compact('equipo', 'repuestos', 'plans','equiposB','primerRutaFoto'));
                $variable="Ficha " . $equipo->codEquipo .".pdf";
                return $pdf->download($variable); 
                

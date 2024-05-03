@@ -40,14 +40,26 @@
 <br>
 <br>
 
- 
-  <Ul style="list-style-type: none; margin-left: -37px;">
-    <li style="font-size:150%;"><strong>Código:</strong>&nbsp;  {{$equipo->codEquipo}}</li> 
-    <li style="font-size:150%;"><strong>Marca:</strong>&nbsp;  {{$equipo->marca}}</li>
-    <li style="font-size:150%;"><strong>Modelo:</strong>&nbsp;  {{$equipo->modelo}}</li>
-    <li style="font-size:150%;"><strong>Sección:</strong>&nbsp;  {{$equipo->idSecc}}</li>
-    <li style="font-size:150%;"><strong>Subsección:</strong>&nbsp;  {{$equipo->idSubSecc}}</li>
-  </Ul>  
+<table>
+  <tr>
+      <td style="vertical-align: top;">
+          <Ul style="list-style-type: none; margin-left: -37px;">
+              <li style="font-size:150%;"><strong>Código:</strong>&nbsp; {{$equipo->codEquipo}}</li>
+              <li style="font-size:150%;"><strong>Marca:</strong>&nbsp; {{$equipo->marca}}</li>
+              <li style="font-size:150%;"><strong>Modelo:</strong>&nbsp; {{$equipo->modelo}}</li>
+              <li style="font-size:150%;"><strong>Sección:</strong>&nbsp; {{$equipo->idSecc}}</li>
+              <li style="font-size:150%;"><strong>Subsección:</strong>&nbsp; {{$equipo->idSubSecc}}</li>
+          </Ul>
+      </td>
+      <td style="width: 400px;"></td> <!-- Espacio vacío -->
+      <td style="vertical-align: top;">
+          <!-- Aquí va tu foto -->
+          @if ($primerRutaFoto)
+          <img src="{{ $primerRutaFoto }}" alt="Foto del equipo" style="width: 200px; height: auto;">
+          @endif
+      </td>
+  </tr>
+</table>
     <br>
   <Ul style="margin-left: -25px;">
     <li style="font-size:100%;">&nbsp;  {{$equipo->det1}}</li>

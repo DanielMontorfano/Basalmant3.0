@@ -106,12 +106,15 @@ class EquipoController extends Controller
         //$plans=$equipo->equiposPlans; //Igual se puede porque ya tengo el registro
         $plans=Equipo::find($id)->equiposPlans; 
         $equiposB=Equipo::find($id)->equiposAEquiposB; 
+        $primerRutaFoto = Foto::where('equipo_id', $equipo->id)->value('rutaFoto');
+        //$NombreFoto_id_=$primerNombreFoto . '_' . $equipo->id;
         //return $equipo;
         //return 'hhhhhhhhhhhhhhhh' . $repuestos;
         //return view('Equipos.show', ['variable'=>$equipo]); video anterior
         $id=array($equipo->id); 
         //print_r($id) ;
-        return view('equipos.show', compact('id','equipo','repuestos', 'plans','equiposB')); //Envío todo el registro en cuestión
+        //return $primerRutaFoto;
+        return view('equipos.show', compact('id','equipo','repuestos', 'plans','equiposB', 'primerRutaFoto')); //Envío todo el registro en cuestión
 
        // return view('Equipos.show');
     }
