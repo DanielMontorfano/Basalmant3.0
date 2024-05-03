@@ -104,7 +104,7 @@ public function store(Request $request)
         $request->validate(['file' => 'required|image|max:2048']);
 
         // Generar un nombre único para la imagen
-        $nombreArchivo = $nombreFoto . '_' . time() . '.' . $request->file('file')->getClientOriginalExtension();
+        $nombreArchivo = $nombreFoto . '_'.$id. '_' . time() . '.' . $request->file('file')->getClientOriginalExtension();
 
         // Guardar la imagen con el nombre específico
         $imagenes = $request->file('file')->storeAs('public/fotos', $nombreArchivo);
