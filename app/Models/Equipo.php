@@ -36,9 +36,7 @@ class Equipo extends Model
         //->withTimestamps();
        // return $this->belongsToMany('App\Models\Repuesto', 'equipo_repuestos', 'equipo_id', 'repuesto_id');
     }
-     
     
-
     public function fotos()
     {
         return $this->hasMany('App\Models\Foto'); //Por ahora no cambio conveniccion de nombres

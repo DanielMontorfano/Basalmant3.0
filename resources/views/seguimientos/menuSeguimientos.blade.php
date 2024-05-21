@@ -37,6 +37,8 @@
                     <img src={{asset('img\imagenes\planImagenCruz1.png')}}  class="card-img-top" alt="...">
                     <p style="font-size: 18px; color: #86d47f;">Sin planes</p>
                     <a href="{{route('seguimientos.sinPlan')}}" class="btn stretched-link"></a>
+                   
+
                   </div>
               </div>
             </div>
@@ -60,6 +62,8 @@
           <div class="card-body">
             <p style="font-size: 24px; color: #86d47f;">EQUIPOS</p>
             <img src={{asset('img\imagenes\Pendiente1.png')}} class="card-img-top" alt="...">
+           
+
             <p style="font-size: 18px; color: #86d47f;">Sin actualización</p>
             <a href="{{route('ordentrabajo.index')}}" class="btn stretched-link"></a>
           </div>
@@ -123,15 +127,22 @@
       <div class="card  text-white" >
           
         <div class="card-body" align="center">
-          {{-- <img src={{asset('img\imagenes\Evolución2.png')}} class="card-img-top" alt="...">
-          <p>Control de versiones</p>
-          <a href="#" class="btn stretched-link"></a> --}}
+          
+          <x-BarraDeProgreso :percentage="86" :color="'#ff0000'" />
+
+
+
         </div>
       </div>
     </div>
   </div>
 </div>
 </div>
+
+
+<x-diagrama-de-torta :percentage="95" :color="'#ff0000'" />
+
+
 
 <div class="container"> 
   @include('layouts.partials.footer')

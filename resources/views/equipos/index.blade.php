@@ -45,8 +45,12 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
 <div class="card-body "  style="max-width: 95;">
 <div class="text-white card-body "  style="max-width: 95;">
 <p ><a  class="text-white " href={{route('equipos.create')}}> Crear equipo</a></p> 
-
-   
+{{-- 
+<form action="{{ route('chequear.alarmas') }}" method="GET">
+  @csrf
+  <button type="submit">Chequear Alarmas</button>
+</form>
+  --}}
 
 <table id="listado" class="table table-striped table-success  table-hover border-4" >
     <thead class="table-dark" >
@@ -124,6 +128,3 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
 </script>
 
 @stop
-
-
-

@@ -63,36 +63,37 @@ class EquipoController extends Controller
      */
 
      public function store(StoreEquipo $request)
-     {
-         // Validar los campos del formulario
-        $request->validate([
-            'codEquipo' => ['required', 'regex:/^\d{2}-[A-Z]{3}-\d{2}[\w-]\d{2}$/'], // Modificado para permitir alfanumérico solo en el décimo carácter
-            'marca' => 'required|min:3',
-            'modelo' => 'required',
-        ], [
-            'codEquipo.regex' => 'El código debe tener el formato adecuado Ej.:"01-ABC-12345".',
-        ]);
-     
-         // Crear un nuevo equipo y asignar los valores del formulario
-         $equipo = new Equipo();
-         $equipo->codEquipo = $request->codEquipo;
-         $equipo->marca = $request->marca;
-         $equipo->modelo = $request->modelo;
-         $equipo->idSecc = $request->idSecc;
-         $equipo->idSubSecc = $request->idSubSecc;
-         $equipo->det1 = $request->det1;
-         $equipo->det2 = $request->det2;
-         $equipo->det3 = $request->det3;
-         $equipo->det4 = $request->det4;
-         $equipo->det5 = $request->det5;
-     
-         // Guardar el equipo en la base de datos
-         $equipo->save();
-     
-         // Redirigir a la vista del equipo creado
-         return redirect()->route('equipos.show', $equipo->id);
-     }
-     
+{
+    // Validar los campos del formulario
+    $request->validate([
+        'codEquipo' => ['required', 'regex:/^\d{2}-[A-Z]{3}-\d{2}[\w-]\d{2}$/'], // Modificado para permitir alfanumérico solo en el décimo carácter
+        'marca' => 'required|min:3',
+        'modelo' => 'required',
+    ], [
+        'codEquipo.regex' => 'El código debe tener el formato adecuado Ej.:"01-ABC-12345".',
+    ]);
+
+    // Crear un nuevo equipo y asignar los valores del formulario
+    $equipo = new Equipo();
+    $equipo->codEquipo = $request->codEquipo;
+    $equipo->marca = $request->marca;
+    $equipo->modelo = $request->modelo;
+    $equipo->idSecc = $request->idSecc;
+    $equipo->idSubSecc = $request->idSubSecc;
+    $equipo->det1 = $request->det1;
+    $equipo->det2 = $request->det2;
+    $equipo->det3 = $request->det3;
+    $equipo->det4 = $request->det4;
+    $equipo->det5 = $request->det5;
+    $equipo->creador = auth()->user()->name; // Asignar el ID del usuario autenticado
+
+    // Guardar el equipo en la base de datos
+    $equipo->save();
+
+    // Redirigir a la vista del equipo creado
+    return redirect()->route('equipos.show', $equipo->id);
+}
+
     /**
      * Display the specified resource.
      *
@@ -233,6 +234,7 @@ class EquipoController extends Controller
           $equipo->det3 = $request->det3;
           $equipo->det4 = $request->det4;
           $equipo->det5 = $request->det5;
+          $equipo->creador = auth()->user()->name; // Asignar el ID del usuario autenticado
       
           // Guardar el equipo en la base de datos
           $equipo->save();

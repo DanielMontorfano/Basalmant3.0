@@ -7,6 +7,8 @@ use App\Models\Equipo;
 use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrdenRequest; 
 use App\Http\Requests\StoreOrdenCerrarRequest; 
+use Illuminate\Support\Facades\Auth;
+use App\Models\User; 
 
 class OrdenTrabajoController extends Controller
 {
@@ -22,6 +24,8 @@ class OrdenTrabajoController extends Controller
         
       //  $ots= OrdenTrabajo::orderBy('id','desc')->paginate();
         $ots= OrdenTrabajo::all();
+        
+
         //$odenesDeEsteEquipo=Equipo::find($id)->ordentrabajo;
        // $equipos= Equipo::orderBy('id','desc')->paginate();
        // return $equipos;   //Sirve para ver la consulta
@@ -51,17 +55,13 @@ class OrdenTrabajoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function createorden($id) //entro con id de Equipo
-    {
-        //$equipos= Equipo::all();
-        $equipo=Equipo::find($id); //SOlo el equipo a quien voy a crear la OT
-        //return $repuestos;
-        
-       // return view('equipos.create',compact('repuestos'));
-       return view('ordentrabajo.create', compact('equipo'));
-       //return $equipo;
-
-    }
+    public function createorden($id)
+{
+    $equipo = Equipo::find($id);
+    $usuarios=User::all();
+    $solicitante = Auth::user(); // Obtener el usuario autenticado
+    return view('ordentrabajo.create', compact('equipo', 'solicitante', 'usuarios'));
+}
 
     /**
      * Store a newly created resource in storage.
@@ -73,12 +73,14 @@ class OrdenTrabajoController extends Controller
     //public function store(Request $request) //Antes de usar archivo StoreEquipo en Request
     {
         //$request->validate(['codEquipo'=>'required|max:8', 'marca'=>'required|min:3', 'modelo'=>'required']);
-        //return $request->all();  //Para probar que recibo todos losregistros del formulario
+       // return $request->all();  //Para probar que recibo todos losregistros del formulario
        // echo "codigo de equipo:" . $request->equipo_id;
          //goto salir;
         // las siguentes lineas seria en forma manual, 
         //dd($request->all());
        // goto salir;
+
+        
         $orden= new OrdenTrabajo();
         $id=$request->equipo_id;
         $orden->equipo_id=$request->equipo_id; //Ojo con las variables recibidas
@@ -128,9 +130,10 @@ class OrdenTrabajoController extends Controller
           $ot=OrdenTrabajo::find($id);
           $aux=$ot->equipo_id; //con id de orden recupero el equipo comoleto
           $equipo= Equipo::find($aux);
+         
         // return $id_orden ;
         //return view('ordentrabajo.show', compact('equipo', 'consulta','estado', 'id_orden'));
-       return view('ordentrabajo.show', compact('equipo', 'ot' ));
+       return view('ordentrabajo.show', compact('equipo', 'ot'));
 
        // return  $ot;
     } 
@@ -143,9 +146,12 @@ class OrdenTrabajoController extends Controller
           $ot=OrdenTrabajo::find($id);
           $aux=$ot->equipo_id; //con id de orden recupero el equipo comoleto
           $equipo= Equipo::find($aux);
+          $usuarios=User::all();
+          $aprobadoPor = Auth::user(); // Obtener el usuario autenticado
+
         // return $id_orden ;
         //return view('ordentrabajo.show', compact('equipo', 'consulta','estado', 'id_orden'));
-          return view('ordentrabajo.showCerrar', compact('equipo', 'ot' ));
+          return view('ordentrabajo.showCerrar', compact('equipo', 'ot','usuarios', 'aprobadoPor' ));
 
        // return  $ot;
     } 

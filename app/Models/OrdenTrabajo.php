@@ -24,4 +24,6 @@ class OrdenTrabajo extends Model
 
         return $this->belongsTo('App\Models\Equipo'); //Por ahora no cambio conveniccion de nombres
     }
+
+    
 }

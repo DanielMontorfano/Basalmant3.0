@@ -25,7 +25,7 @@ class StoreOrdenRequest extends FormRequest
     public function rules()
     {
         return ['equipo_id'=>'required|numeric',
-                'solicitante'=>'required|min:5',
+                //'solicitante'=>'required|min:5',
                // 'fechaNecesidad'=>'required',
                 'asignadoA'=>'required',
                 'prioridad' =>'required',
@@ -39,7 +39,7 @@ class StoreOrdenRequest extends FormRequest
     {
         return[
           
-            'solicitante'=>'Sector o persona que emite la O.T.',
+           // 'solicitante'=>'Sector o persona que emite la O.T.',
             'fechaNecesidad'=>'Fecha que se requiere el trabajo',
             'asignadoA'=>'Quien recibe',
             'prioridad' =>'Nivel de prioridad',

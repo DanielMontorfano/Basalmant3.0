@@ -443,6 +443,30 @@ return [
                 ], FOTOS*/
             ],
         ],
+        [
+            'text'    => 'Alarmas',
+            'icon'    => 'fa fa-exclamation-triangle',
+            'icon_color' => 'cyan',
+            'submenu' => [
+                [
+                    'text' => 'O.d.T: Vencidas',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'mostrar.alarmas',
+                ],
+                [
+                    'text' => 'Equipos: Sin completar',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'lubricacion.create',
+                ],
+                [
+                    'text' => 'Planes: No ejecutados',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'lubricacion.create',
+                ],
+                 
+        
+            ],
+        ],
         ['header' => 'Acerca de:'],
         [
             'text'       => 'Nosotros',

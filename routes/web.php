@@ -37,7 +37,9 @@ use App\Http\Controllers\HistorialController;
 
 use App\Http\Controllers\LubricacionController;
 use App\Http\Controllers\EquipoLubricacionController;
-
+use App\Http\Controllers\PlanequipoController; 
+use App\Http\Controllers\SearchUsersController;
+use App\Http\Controllers\AlarmaController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -147,8 +149,9 @@ Route::get('/catchId', [RepuestoController::class, 'catchId'])->name('repuestos.
  Route::get('search/lubricaciones', [SearchLubricController::class, 'lubricaciones'])->name('search.lubricaciones');
 
  Route::get('search/equipos', [SearchEquipoController::class,'equipos'])->name('search.equipos'); //NO Olvidar poner use!!!! esta ruta permite hacer las busqudas asicrónicas AJAX
- 
- 
+ //Route::get('search/users', [SearchUsersController::class,'users'])->name('search.users'); //NO Olvidar poner use!!!! esta ruta permite hacer las busqudas asicrónicas AJAX
+ Route::get('search/users', [SearchUsersController::class, 'users'])->name('search.users');
+
  //****************************LUBRICACIONES*********************** */
  Route::resource('lubricacion', LubricacionController::class);
  
@@ -179,5 +182,16 @@ Route::get('/catchId', [RepuestoController::class, 'catchId'])->name('repuestos.
 
  //*********************Hasta Aqui ************************************************ */
  
+ Route::get('graficos', [PlanequipoController::class,'index']);
+
+
+ /////******************************ALARMAS*********************************** */
+
+
+
+
+Route::get('/chequear-alarmas', [AlarmaController::class, 'chequearAlarmas'])->name('chequear.alarmas');
+Route::get('/chequear-alarmas', [AlarmaController::class, 'mostrarAlarmas'])->name('mostrar.alarmas');
+
 
 });
