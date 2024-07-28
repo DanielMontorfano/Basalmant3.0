@@ -4,26 +4,26 @@
 
 @section('css')
 <style>
-  .custom-search-button {
+  .custom-button {
     padding: 5px 10px;
     margin-left: 10px;
-    background-color: rgb(14, 47, 148);
-    color: rgb(214, 239, 224);
+    background-color: rgb(2, 58, 60);
+    color: rgb(136, 224, 171);
     border: none;
     border-radius: 8px;
   }
 
-  .custom-search-button:hover {
-    background-color: rgb(42, 100, 162);
+  .custom-button:hover {
+    background-color: rgb(39, 83, 57);
   }
 
-  .custom-search-button:active {
-    background-color: rgb(4, 18, 40);
+  .custom-button:active {
+    background-color: rgb(2, 39, 25);
   }
 
   /* Estilo para las filas de la tabla con fondo degradado */
   .table-striped tbody tr {
-    background: linear-gradient(to right, #01181f, #0072ff, #000000);
+    background: linear-gradient(to right, rgb(18, 23, 18), #06170b, #000000);
     color: #ffffff; /* Color del texto */
   }
 
@@ -35,7 +35,7 @@
 
   /* Estilo para el modal */
   .modal-content {
-    background: -webkit-linear-gradient(rgb(1, 50, 162), rgb(9, 17, 35)); /* Fondo del modal */
+    background: linear-gradient(to right, rgb(18, 23, 18), #06170b, #000000); /* Fondo del modal */
     color: #ffffff; /* Color del texto del modal */
   }
 
@@ -66,7 +66,7 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
 
 @section('content')
 {{-- Contenedor principal de la tarjeta --}}
-<div class="card border-primary" style="background: linear-gradient(to left,#0f1b58,#030007);">
+<div class="card border-primary" style="background: linear-gradient(to left,#495c5c,#030007)">
     <div class="card-body" style="max-width: 100%;">
         <div class="text-white card-body" style="max-width: 100%;">
             <p>
@@ -92,7 +92,7 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
                         <td>{{ $alarma->solicitante }}</td>
                         <td>{{ $alarma->prioridad }}</td>
                         <td>
-                            <button class="btn btn-primary" data-toggle="modal" data-target="#modalDetalle{{ $alarma->orden_trabajo_id }}">Detalles</button>
+                            <button class="btn btn-success" data-toggle="modal" data-target="#modalDetalle{{ $alarma->orden_trabajo_id }}">Detalles</button>
                         </td>
                     </tr>
 
@@ -107,7 +107,8 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p><strong>Orden de Trabajo ID:</strong> O.d.T-{{ $alarma->orden_trabajo_id }}</p>
+                                    <p><strong>Orden de Trabajo ID:</strong> <a href="{{route('ordentrabajo.show',  $alarma->orden_trabajo_id)}}">O.d.T-{{ $alarma->orden_trabajo_id}}</a></p>
+                                    
                                     <p><strong>Asignado A:</strong> {{ $alarma->asignadoA }}</p>
                                     <p><strong>Solicitante:</strong> {{ $alarma->solicitante }}</p>
                                     <p><strong>Prioridad:</strong> {{ $alarma->prioridad }}</p>
@@ -156,28 +157,49 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
     // Obtener el nombre del usuario autenticado desde Blade
     var usuario = @json($usuario->name);
 
-    // Agregar botón de filtrado
+    // Filtrar automáticamente por usuario al cargar la página
+    datatable.column(1).search(usuario).draw();
+
+    // Agregar botón de búsqueda general
     var searchButton = $('<button/>', {
-      text: 'Buscar por Usuario',
-      title: 'Buscar alarmas asignadas al usuario',
-      class: 'custom-search-button', // Agregamos una clase personalizada
+      text: 'Buscar',
+      title: 'Buscar en toda la tabla',
+      class: 'custom-button', // Agregamos una clase personalizada
       click: function() {
-        var searchInput = $('.dataTables_filter input');
-        searchInput.val(usuario).trigger('keyup');
+        var searchInput = $('.dataTables_filter input').val();
+        datatable.search(searchInput).draw();
       }
     });
 
-    $('.dataTables_filter').append(searchButton);
+    // Agregar botón "Todos" para mostrar la tabla completa sin filtros
+    var allButton = $('<button/>', {
+      text: 'Todos',
+      title: 'Mostrar todas las alarmas',
+      class: 'custom-button', // Agregamos una clase personalizada
+      click: function() {
+        // Limpiar todos los filtros
+        datatable.search('').columns().search('').draw();
+      }
+    });
+
+    // Agregar botón de filtrado "Mío"
+    var mioButton = $('<button/>', {
+      text: 'Míos',
+      title: 'Buscar alarmas asignadas al usuario',
+      class: 'custom-button', // Agregamos una clase personalizada
+      click: function() {
+        // Filtro en la columna "Asignado A"
+        datatable.column(1).search(usuario).draw();
+      }
+    });
+
+    // Agregar los botones al contenedor de filtro de DataTable en el orden deseado
+    $('.dataTables_filter').append(searchButton).append(allButton).append(mioButton);
 
     // Hacer los modales arrastrables
     $('.modal-dialog').draggable({
       handle: ".modal-header"
     });
   });
-
-  /* var logoUrl = '{{ asset('dataprint/LogoIngenio2.png') }}';
-  var titulo ='Listado de todos los equipos';
-  var url = "{{route('imprimirListado','equipos')}}" */
 </script>
 @endsection
-

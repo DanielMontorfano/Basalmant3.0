@@ -3,6 +3,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use App\Console\Commands\ChequeoDiario; // Asegúrate de importar la clase ChequeoDiario
+use App\Console\Commands\GenerarAvisos; // Asegúrate de importar la clase GenerarAvisos
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -21,4 +22,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ChequeoDiario::class, // Agregado por mi *****Agrega el comando ChequeoDiario aquí
         // Agrega otros comandos aquí si es necesario
     ])
+    ->withCommands([
+        GenerarAvisos::class, // Agregado por mi *****Agrega el comando GenerarAvisos aquí
+        // Agrega otros comandos aquí si es necesario
+    ])
+    
     ->create();

@@ -14,6 +14,9 @@ use App\Models\Foto;
 use App\Models\Documento;
 use App\Models\Plan;
 use App\Models\Protocolo;
+use App\Models\Aviso;
+use Illuminate\Support\Facades\Auth;
+use PhpParser\Node\Stmt\Return_;
 
 //use Illuminate\Support\Collection;
 
@@ -27,19 +30,18 @@ class EquipoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //$equipos= Equipo::orderBy('id','desc')->paginate(); //NO le GUSTA con el PLUG IN datatable;!!!!
-        $equipos= Equipo::all(); //Trae todos los registros
-       // return $equipos;   //Sirve para ver la consulta
-      // $encabezado = view('equipos.encabezado')->render();
+{
+    // Obtener el usuario autenticado
+    $usuario = Auth::user();
+   
+    // Obtener todos los equipos
+    $equipos = Equipo::all();
+    // Obtener los avisos del usuario autenticado
+    $avisos = Aviso::where('usuario_id', $usuario->id)->get();
 
-      // return view('equipos.index', compact('equipos', 'encabezado'));
-
-
-       return view('equipos.index',compact('equipos')); //Envío todos los registro en cuestión.La consulta va sin simbolo de pesos
-       // dd ($equipos->all());
-       //return;
-    }
+    // Retornar la vista con las variables necesarias
+    return view('equipos.index', compact('equipos', 'usuario', 'avisos'));
+}
 
 
     /**

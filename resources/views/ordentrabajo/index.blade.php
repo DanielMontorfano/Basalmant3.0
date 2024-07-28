@@ -12,6 +12,7 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
 -webkit-text-fill-color: transparent;">Listado de todas las O.d.T.</h6>
 @stop
 @section('content')
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 <div class="card border-primary" style="background: linear-gradient(to left,#495c5c,#030007); ">
 <div class="card-body "  style="max-width: 95;">
 <div class="text-white card-body "  style="max-width: 95;">
@@ -79,8 +80,64 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
   @include('layouts.partials.footer')
  </div>
 {{-- aqui Todos los script ver plantilla--}}
-@endsection
 
+@endsection
+@section('js')
+<script>
+    var usuarioNombre = @json($usuario->name);
+
+    // Función para mostrar la alerta después de 10 segundos
+    setTimeout(function() {
+        // Mostrar alerta personalizada con SweetAlert2
+        Swal.fire({
+            title: usuarioNombre + ':',
+            text: 'El plazo para hacer algunos trabajos ya se cumplió',
+            icon: 'warning',
+            timer: 3000, // 3 segundos
+            timerProgressBar: true,
+            showConfirmButton: false,
+            showCancelButton: true, // Mostrar botón de cancelar
+            cancelButtonText: 'Inspeccionar', // Texto del botón de cancelar
+            cancelButtonColor: 'green', // Color del botón de cancelar
+            background: 'linear-gradient(to right, rgb(86, 103, 86), black)', // Fondo degradado de verde a negro
+            border: '2px solid red', // Borde rojo
+            cancelButtonAriaLabel: 'Inspeccionar', // Atributo ARIA del botón de cancelar
+            cancelButtonClass: 'custom-inspect-button', // Clase personalizada del botón de cancelar
+            customClass: {
+                title: 'swal2-title-custom',
+                content: 'swal2-content-custom',
+                popup: 'custom-swal-popup'
+            }
+        }).then((result) => {
+            // Manejar el clic en el botón de cancelar
+            if (result.dismiss === Swal.DismissReason.cancel) {
+                // Redirigir al usuario a la ruta /chequear-alarmas
+                window.location.href = '/chequear-alarmas';
+            }
+        });
+    }, 5000); // 5 segundos
+</script>
+
+<style>
+    .custom-swal-popup {
+        position: fixed;
+        bottom: 20px; /* Ajusta según sea necesario */
+        left: 20px; /* Ajusta según sea necesario */
+        width: 250px !important; /* Ajusta el ancho según sea necesario */
+        padding: 10px !important; /* Ajusta el padding según sea necesario */
+        margin: 0 !important;
+    }
+    .swal2-title-custom {
+        font-size: 1.2em; /* Ajusta el tamaño de la fuente del título */
+    }
+    .swal2-content-custom {
+        font-size: 1em; /* Ajusta el tamaño de la fuente del contenido */
+    }
+    .custom-inspect-button {
+        font-size: 0.9em; /* Ajusta el tamaño de la fuente del botón de cancelar */
+    }
+</style>
+@endsection
 
 
 

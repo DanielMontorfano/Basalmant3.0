@@ -1,9 +1,9 @@
 @extends('adminlte::page')
 
-@section('title', 'Seguimientos')
+@section('title', 'Estadisticas')
 
 @section('content_header')
-    <h1>Seguimientos</h1>
+    <h1>Estadisticas</h1>
 @stop
 
 @section('content')

@@ -10,6 +10,7 @@ class CreateAlarmasTable extends Migration
        
         Schema::create('alarmas', function (Blueprint $table) {
             // Agregar campo para el ID de la orden de trabajo relacionada
+            $table->id();
             $table->unsignedBigInteger('orden_trabajo_id')->nullable();
             $table->string('asignadoA')->nullable();
             $table->string('solicitante')->nullable();

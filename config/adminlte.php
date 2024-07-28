@@ -347,6 +347,18 @@ return [
              'route'       => 'menu_seguimientos.index',
             'topnav_right' => true,
         ],
+
+        [
+            'text'         => 'Estadisticas',
+             'route'       => 'Estadistica.index',
+            'topnav_right' => true,
+        ],
+
+        [
+            'text'         => 'gantt',
+             'route'       => 'gantt',
+            'topnav_right' => true,
+        ],
         
         [
             'type'         => 'navbar-search',
@@ -467,6 +479,36 @@ return [
         
             ],
         ],
+
+
+        [
+            'text'    => 'Proyectos',
+            'icon'    => 'fa fa-exclamation-triangle',
+            'icon_color' => 'cyan',
+            'submenu' => [
+                [
+                    'text' => 'Nuevo',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'proyectos.create',
+                ],
+                [
+                    'text' => 'Listar',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'lubricacion.create',
+                ],
+                              
+        
+            ],
+        ],
+        
+
+
+
+
+
+
+
+
         ['header' => 'Acerca de:'],
         [
             'text'       => 'Nosotros',

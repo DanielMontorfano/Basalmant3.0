@@ -11,6 +11,8 @@ use App\Models\ProtoTarea;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePlanRequest;
 use Illuminate\Support\Facades\DB;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Validator;
 
 class PlanController extends Controller
 {
@@ -50,7 +52,7 @@ class PlanController extends Controller
     {
         //$request->validate(['codEquipo'=>'required|max:8', 'marca'=>'required|min:3', 'modelo'=>'required']);
         //return $request->all();  //Para probar que recibo todos losregistros del formulario
-      
+        //dd($request->fecha_inicio);
         // las siguentes lineas seria en forma manual, 
         $plan= new Plan();
        // $plan->codigo=$request->codigo;
@@ -59,7 +61,6 @@ class PlanController extends Controller
         $plan->unidad=$request->unidadSelect;
         $plan->descripcion=$request->descripcion;
         $plan->save();
-
         $id_ultimo= "PL-" . str_pad($plan->id,"8","0", STR_PAD_LEFT); //Formato para codigo
         $plan= Plan::find($plan->id);
         $plan->codigo= $id_ultimo;
@@ -73,6 +74,58 @@ class PlanController extends Controller
         return redirect()->route('plans.show', $plan->id); //se puede omitir ->id, igual funciona
         //return $plan;
     }
+    
+    //Almacena si es un proyecto
+
+
+    public function storeProyecto(Request $request)
+{
+    // Validar la entrada del usuario
+    $validator = Validator::make($request->all(), [
+        'pytoNombre' => 'required|string|max:255',
+        'pytoDescripcion' => 'required|string|max:255',
+        'fecha_inicio' => 'required|date',
+        'fecha_fin' => 'required|date|after:fecha_inicio',
+    ]);
+
+    // Si la validación falla, redirigir con errores
+    if ($validator->fails()) {
+        return redirect()->back()
+            ->withErrors($validator)
+            ->withInput();
+    }
+
+    // Crear un nuevo plan con los datos validados
+    $plan = new Plan();
+    $plan->nombre = $request->pytoNombre;
+    $plan->fechaInicio = $request->fecha_inicio;
+    $plan->fechaFin = $request->fecha_fin;
+    $plan->descripcion = $request->pytoDescripcion;
+
+    // Calcular la cantidad de días entre las dos fechas
+    $fechaInicio = Carbon::parse($request->fecha_inicio);
+    $fechaFin = Carbon::parse($request->fecha_fin);
+    $duracion = $fechaInicio->diffInDays($fechaFin);
+
+    // Guardar la duración en el modelo
+    $plan->duracion = $duracion;
+
+    // Guardar el nuevo plan en la base de datos
+    $plan->save();
+
+    // Formato para el código
+    $id_ultimo = "PR-" . str_pad($plan->id, 8, "0", STR_PAD_LEFT);
+    $plan->codigo = $id_ultimo;
+    $plan->save();
+
+    // Redirigir a la vista de detalles del plan
+    return redirect()->route('plans.show', $plan->id);
+}
+
+
+
+
+
 
     /**
      * Display the specified resource.

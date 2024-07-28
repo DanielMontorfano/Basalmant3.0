@@ -40,6 +40,13 @@ use App\Http\Controllers\EquipoLubricacionController;
 use App\Http\Controllers\PlanequipoController; 
 use App\Http\Controllers\SearchUsersController;
 use App\Http\Controllers\AlarmaController;
+use App\Http\Controllers\AvisoController; 
+use App\Http\Controllers\EstadisticaController;
+
+use App\Http\Controllers\ProyectoController;
+use App\Http\Controllers\PtareaController;
+use App\Http\Controllers\SubtareaController;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -135,6 +142,8 @@ Route::get('/catchId', [RepuestoController::class, 'catchId'])->name('repuestos.
  
  //**************************************************************************** */
  Route::resource('plans', PlanController::class);
+ Route::post('plans/proyecto', [PlanController::class, 'storeProyecto'])->name('store.proyecto');
+ 
  Route::resource('planproto', PlanprotoController::class);
  Route::get('plans/{plans}/copiar', [PlanController::class, 'copiar'])->name('plans.copiar');
 
@@ -143,6 +152,7 @@ Route::get('/catchId', [RepuestoController::class, 'catchId'])->name('repuestos.
  
  
  Route::get('search/tareas', [SearchTareasController::class,'tareas'])->name('search.tareas'); //esta ruta permite hacer las busqudas asicrónicas AJAX
+ Route::get('search/tareas', [SearchTareasController::class,'tareas'])->name('buscarTarea'); //esta ruta permite hacer las busqudas asicrónicas AJAX
  Route::get('search/protocolos', [SearchProtocolosController::class,'protocolos'])->name('search.protocolos'); //esta ruta permite hacer las busqudas asicrónicas AJAX
  Route::get('search/plans', [SearchPlansController::class,'plans'])->name('search.plans'); //NO Olvidar poner use!!!! esta ruta permite hacer las busqudas asicrónicas AJAX
  //Route::get('search/lubricaciones', [SearchLubricController::class,'lubricaciones'])->name('search.lubricaciones');
@@ -192,6 +202,26 @@ Route::get('/catchId', [RepuestoController::class, 'catchId'])->name('repuestos.
 
 Route::get('/chequear-alarmas', [AlarmaController::class, 'chequearAlarmas'])->name('chequear.alarmas');
 Route::get('/chequear-alarmas', [AlarmaController::class, 'mostrarAlarmas'])->name('mostrar.alarmas');
+
+
+Route::get('/verificar-ordenes-trabajo', [AlarmaController::class, 'verificarOrdenesTrabajo'])->name('app:verificar-ordenes-trabajo');
+
+
+/////******************************AVISOS*********************************** */
+
+Route::get('/avisos', [AvisoController::class, 'index'])->name('avisos.index');
+
+/////******************************ESTADISTICA*********************************** */
+Route::resource('Estadistica', EstadisticaController::class);
+Route::get('/gantt', [EstadisticaController::class, 'gantt'])->name('gantt');
+
+/////******************************PROYECTOS*********************************** */
+Route::resource('proyectos', ProyectoController::class);
+Route::resource('ptareas', PtareaController::class);
+Route::resource('subtareas', SubtareaController::class);
+
+
+
 
 
 });

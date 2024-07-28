@@ -82,6 +82,8 @@ background: -webkit-linear-gradient(rgb(1, 103, 71), rgb(239, 236, 217));
 </div>
 
 </div>
+<x-notification-panel :avisos="$avisos" />
+
       <div class="container"> 
         @include('layouts.partials.menuListados')
       </div>

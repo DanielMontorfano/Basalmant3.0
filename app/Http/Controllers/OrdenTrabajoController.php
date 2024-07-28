@@ -8,7 +8,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreOrdenRequest; 
 use App\Http\Requests\StoreOrdenCerrarRequest; 
 use Illuminate\Support\Facades\Auth;
-use App\Models\User; 
+use App\Models\User;
+use App\Models\Alarma; 
 
 class OrdenTrabajoController extends Controller
 {
@@ -20,8 +21,11 @@ class OrdenTrabajoController extends Controller
     public function index()
     {       
         //
-       // $equipos= Equipo::all();  //Trae todos los registro
-        
+       
+       $usuario = Auth::user();
+       // Verificar si hay alarmas asignadas al usuario autenticado
+       $aviso = Alarma::where('asignadoA', $usuario->name)->exists();
+ 
       //  $ots= OrdenTrabajo::orderBy('id','desc')->paginate();
         $ots= OrdenTrabajo::all();
         
@@ -29,7 +33,7 @@ class OrdenTrabajoController extends Controller
         //$odenesDeEsteEquipo=Equipo::find($id)->ordentrabajo;
        // $equipos= Equipo::orderBy('id','desc')->paginate();
        // return $equipos;   //Sirve para ver la consulta
-       return view('ordentrabajo.index',compact('ots')); //Envío todos los registro en cuestión.La consulta va sin simbolo de pesos
+       return view('ordentrabajo.index',compact('ots', 'aviso','usuario')); //Envío todos los registro en cuestión.La consulta va sin simbolo de pesos
        
     }
     public function list($id) //entro con id de Equipo

@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 
 use Illuminate\Support\Facades\Auth;
+use App\Models\OrdenTrabajo;
+
+use App\Http\Controllers\OrdenTrabajoController;
 class AlarmaController extends Controller
 {
     /**
@@ -24,13 +27,16 @@ class AlarmaController extends Controller
     public function mostrarAlarmas()
 {
     // Invocar el comando de Artisan para chequear las alarmas
-    Artisan::call('app:check-alarms');
-
+    Artisan::call('check-alarms');
+    
     // Obtener todas las alarmas junto con las órdenes de trabajo relacionadas
     $alarmas = Alarma::with('ordenTrabajo')->get();
     $usuario = Auth::user(); // Obtener el usuario autenticado// return $alarmas;
+    $ot=OrdenTrabajo::all();
     // Redirigir a la vista con las alarmas y las órdenes de trabajo relacionadas
-    return view('alarmas.show', compact('alarmas','usuario'));
+    return view('alarmas.show', compact('alarmas','usuario','ot'));
 }
+
+
 
 }
