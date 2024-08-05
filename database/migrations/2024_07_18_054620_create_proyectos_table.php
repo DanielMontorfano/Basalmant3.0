@@ -19,6 +19,7 @@ class CreateProyectosTable extends Migration
             $table->text('descripcion')->nullable();
             $table->date('fecha_inicio')->nullable();
             $table->date('fecha_fin')->nullable();
+            $table->string('creador', 255)->nullable();
             $table->timestamps();  // Crea campos created_at y updated_at
         });
     }

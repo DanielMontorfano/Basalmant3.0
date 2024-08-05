@@ -46,6 +46,7 @@ use App\Http\Controllers\EstadisticaController;
 use App\Http\Controllers\ProyectoController;
 use App\Http\Controllers\PtareaController;
 use App\Http\Controllers\SubtareaController;
+//use App\Http\Middleware\CheckDeletePermission;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,7 +91,7 @@ Route::middleware(['auth:sanctum', config('jetstream.auth_session'),  'verified'
 
 
 
- Route::delete('/equipos/{equipo}/borrar', [EquipoController::class, 'destroy'])->name('equipos.destroy');
+ //Route::delete('/equipos/{equipo}/borrar', [EquipoController::class, 'destroy'])->name('equipos.destroy');
  Route::resource('equipoRepuesto', EquipoRepuestoController::class);
  Route::get('search/repuestos', [SearchRepuestosController::class,'repuestos'])->name('search.repuestos');
  Route::resource('equipoPlan', EquipoplanController::class);
@@ -219,6 +220,12 @@ Route::get('/gantt', [EstadisticaController::class, 'gantt'])->name('gantt');
 Route::resource('proyectos', ProyectoController::class);
 Route::resource('ptareas', PtareaController::class);
 Route::resource('subtareas', SubtareaController::class);
+
+///// ********************* Middelware para borrar y otros ***************
+/*Route::get('/equipos', [EquipoController::class, 'index'])
+    ->name('equipos.index') // Nombrar la ruta como 'equipos.index'
+    ->middleware('Is_admin');*/
+
 
 
 

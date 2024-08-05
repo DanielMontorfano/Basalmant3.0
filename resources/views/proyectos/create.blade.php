@@ -35,6 +35,14 @@
         font-family: Arial, sans-serif;
         font-size: 14px;
     }
+
+    .task {
+        margin-left: 0;
+    }
+
+    .subtask {
+        margin-left: 100px; /* Margen izquierdo para diferenciar visualmente las subtareas */
+    }
 </style>
 
 <br>

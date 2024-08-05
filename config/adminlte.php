@@ -494,14 +494,32 @@ return [
                 [
                     'text' => 'Listar',
                     'icon' => 'fa-solid fa-clipboard',
-                    'route'=> 'lubricacion.create',
+                    'route'=> 'proyectos.index',
                 ],
                               
         
             ],
         ],
         
-
+        [
+            'text'    => 'Estadisticas',
+            'icon'    => 'fa fa-exclamation-triangle',
+            'icon_color' => 'cyan',
+            'submenu' => [
+                [
+                    'text' => 'Diagramas',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'menu_seguimientos.index',
+                ],
+                [
+                    'text' => 'Listar',
+                    'icon' => 'fa-solid fa-clipboard',
+                    'route'=> 'proyectos.index',
+                ],
+                              
+        
+            ],
+        ],
 
 
 

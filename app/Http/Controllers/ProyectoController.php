@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Log; // Importar Log para registrar mensajes
 use App\Models\Ptarea;
 use App\Models\Subtarea;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
+
 
 class ProyectoController extends Controller
 {
@@ -46,6 +48,7 @@ class ProyectoController extends Controller
             $proyecto = new Proyecto();
             $proyecto->nombre = $request->nombre;
             $proyecto->descripcion = $request->descripcion;
+            $proyecto->creador = Auth::id();
             $proyecto->save();
     
             // Recorrer las tareas
@@ -102,10 +105,40 @@ class ProyectoController extends Controller
     }
 
 
-    public function show(Proyecto $proyecto)
+    // ProyectoController.php
+
+    public function show($id)
     {
-        
+        $proyecto = Proyecto::with('ptareas.subtareas')->findOrFail($id);
+    
+        $tasksData = [];
+        foreach ($proyecto->ptareas as $tarea) {
+            // Agregamos la tarea principal
+            $tasksData[] = [
+                'name' => $tarea->descripcion,
+                'id' => 'tarea' . $tarea->id,
+                'start' => strtotime($tarea->fecha_inicio) * 1000, // Convertimos a timestamp en milisegundos
+                'end' => strtotime($tarea->fecha_fin) * 1000 // Convertimos a timestamp en milisegundos
+            ];
+    
+            // Agregamos las subtareas
+            foreach ($tarea->subtareas as $subtarea) {
+                $tasksData[] = [
+                    'name' => $subtarea->descripcion,
+                    'id' => 'subtarea' . $subtarea->id,
+                    'parent' => 'tarea' . $tarea->id,
+                    'start' => strtotime($subtarea->fecha_inicio) * 1000, // Convertimos a timestamp en milisegundos
+                    'end' => strtotime($subtarea->fecha_fin) * 1000 // Convertimos a timestamp en milisegundos
+                ];
+            }
+        }
+    
+        return view('proyectos.show', [
+            'proyecto' => $proyecto,
+            'tasksData' => $tasksData
+        ]);
     }
+    
 
     public function edit(Proyecto $proyecto)
     {

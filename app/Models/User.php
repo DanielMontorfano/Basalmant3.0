@@ -17,19 +17,20 @@ class User extends Authenticatable
     /**
      * The attributes that are mass assignable.
      *
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
         'email',
         'password',
         'username',
+        'role', // Asegúrate de que 'role' esté en fillable si se va a asignar en masa
     ];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $hidden = [
         'password',
@@ -41,7 +42,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @var array<string, string>
      */
     protected $casts = [
         'email_verified_at' => 'datetime',
@@ -50,15 +51,21 @@ class User extends Authenticatable
     /**
      * The accessors to append to the model's array form.
      *
-     * @var array
+     * @var array<int, string>
      */
     protected $appends = [
         'profile_photo_url',
     ];
 
     /**
-     * Get the orders assigned to the user.
+     * Verifica si el usuario tiene permisos para eliminar.
+     *
+     * @return bool
      */
-   
-
+    public function canDelete(): bool
+    {
+        // Define la lógica para determinar si el usuario tiene permisos para eliminar.
+        // Por ejemplo, si el usuario tiene un rol específico.
+        return $this->role === 'admin'; // Cambia esto según tu lógica.
+    }
 }

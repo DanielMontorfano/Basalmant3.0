@@ -39,8 +39,10 @@ class EquipoController extends Controller
     // Obtener los avisos del usuario autenticado
     $avisos = Aviso::where('usuario_id', $usuario->id)->get();
 
+    $role=Auth::user()->role;
+
     // Retornar la vista con las variables necesarias
-    return view('equipos.index', compact('equipos', 'usuario', 'avisos'));
+    return view('equipos.index', compact('equipos', 'usuario', 'avisos', 'role'));
 }
 
 
@@ -102,26 +104,38 @@ class EquipoController extends Controller
      * @param  \App\Models\Equipo  $equipo
      * @return \Illuminate\Http\Response
      */
-   public function show($id)  //Segunda Manera de Recuperar el registro pasando el id
-        {
-        $equipo= Equipo::find($id); // Ver la linea de abajo alternativa
-        $repuestos=$equipo->equiposRepuestos; // otra alternativa: $repuestos= Equipo::find($id)->equiposRepuestos; en una sola linea. 
-        //$plans=$equipo->equiposPlans; //Igual se puede porque ya tengo el registro
-        $plans=Equipo::find($id)->equiposPlans; 
-        $equiposB=Equipo::find($id)->equiposAEquiposB; 
-        $primerRutaFoto = Foto::where('equipo_id', $equipo->id)->value('rutaFoto');
-        //$NombreFoto_id_=$primerNombreFoto . '_' . $equipo->id;
-        //return $equipo;
-        //return 'hhhhhhhhhhhhhhhh' . $repuestos;
-        //return view('Equipos.show', ['variable'=>$equipo]); video anterior
-        $id=array($equipo->id); 
-        //print_r($id) ;
-        //return $primerRutaFoto;
-        return view('equipos.show', compact('id','equipo','repuestos', 'plans','equiposB', 'primerRutaFoto')); //Envío todo el registro en cuestión
-
-       // return view('Equipos.show');
-    }
+    public function show($id)
+    {
+        try {
+            // Encuentra el equipo por su ID o lanza una excepción si no se encuentra
+            // Reemplazamos find() con findOrFail() para manejar la ausencia del registro
+            $equipo = Equipo::findOrFail($id); // Antes: $equipo = Equipo::find($id);
     
+            // Recupera los repuestos asociados al equipo
+            // Utiliza el objeto $equipo para acceder a las relaciones, evitando múltiples consultas
+            $repuestos = $equipo->equiposRepuestos; // Antes: $repuestos = Equipo::find($id)->equiposRepuestos;
+    
+            // Recupera los planes asociados al equipo
+            $plans = $equipo->equiposPlans; // Antes: $plans = Equipo::find($id)->equiposPlans;
+    
+            // Recupera los equipos B asociados al equipo
+            $equiposB = $equipo->equiposAEquiposB; // Antes: $equiposB = Equipo::find($id)->equiposAEquiposB;
+    
+            // Recupera la primera ruta de foto para el equipo
+            // Utiliza el ID del equipo para encontrar la ruta de la primera foto
+            $primerRutaFoto = Foto::where('equipo_id', $equipo->id)->value('rutaFoto');
+    
+            // Devuelve la vista con las variables necesarias
+            // Usamos compact() para pasar múltiples variables a la vista de manera más limpia
+            return view('equipos.show', compact('equipo', 'repuestos', 'plans', 'equiposB', 'primerRutaFoto'));
+            // Antes: return view('equipos.show', compact('id', 'equipo', 'repuestos', 'plans', 'equiposB', 'primerRutaFoto'));
+        } catch (\Exception $e) {
+            // Maneja el error si el equipo no se encuentra o hay otro problema
+            // Redirige a la página de índice con un mensaje de error
+            return redirect()->route('equipos.index')
+                             ->with('error', 'No se pudo encontrar el equipo. Error: ' . $e->getMessage());
+        }
+    }
     public function showphoto($id)  //Segunda Manera de Recuperar el registro pasando el id
         {
         $equipo= Equipo::find($id); // Ver la linea de abajo alternativa
@@ -266,19 +280,44 @@ class EquipoController extends Controller
      * @param  \App\Models\Equipo  $equipo
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id) // ya se instancia modelo Equipo en $equipo
-    {    
-        $equipo= Equipo::find($id);
-        if(!is_null($equipo->id)){
-          //  $equipo->delete();
-            echo  'Se Borro: ' . $equipo->id  . '<br>';
-            }else 'No hay nada que borrar';
-     //   $equipo->delete();
-    
-      //  return view('Equipos.destroy', compact('equipo'));
-       // return redirect()->route('equipos.index');
-       return ;
+    public function destroy($id)
+{
+    try {
+        $equipo = Equipo::findOrFail($id);
+
+        // Elimina las relaciones en tablas pivote si existen
+        $equipo->equiposRepuestos()->detach();
+        $equipo->equiposPlans()->detach();
+        $equipo->equiposPlansejecut()->detach();  //OJO tengo un error en las s de la tabla y modelo
+        $equipo->equiposAEquiposB()->detach();
+        $equipo->equiposBEquiposA()->detach();
+        $equipo->equiposTareash()->detach();
+        $equipo->lubricaciones()->detach();
+
+        // Elimina los registros dependientes
+        $equipo->ordentrabajo()->delete(); // Elimina todas las órdenes de trabajo relacionadas
+        $equipo->fotos()->delete();        // Elimina todas las fotos relacionadas
+        $equipo->documentos()->delete();  // Elimina todos los documentos relacionados
+
+        // Elimina el equipo
+        $equipo->delete();
+        //dd('Borrado: ' . $id);
+       //Equipo::destroy($id);
+       //Equipo::where('id', $id)->delete();
+
+        return redirect()->route('equipos.index')
+                         ->with('success', 'Equipo eliminado con éxito.');
+    } catch (\Exception $e) {
+
+       //dd('No pude borrar: ' . $id . $e->getMessage());
+        return redirect()->route('equipos.index')
+                         ->with('error', 'No se pudo eliminar el equipo. Error: ' . $e->getMessage());
     }
+}
+
+
+
+
 
      
     public function equipoTareasShow($id)  //Segunda Manera de Recuperar el registro pasando el id
